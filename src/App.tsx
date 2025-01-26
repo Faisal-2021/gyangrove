@@ -10,6 +10,7 @@ import {
 import type { InventoryItem, SortDirection } from "./types";
 
 function App() {
+  // state for items
   const [items, setItems] = useState<InventoryItem[]>([
     {
       id: "1",
@@ -29,6 +30,7 @@ function App() {
     },
   ]);
 
+  // state for filter, category, sort direction, modal
   const [filter, setFilter] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
@@ -40,6 +42,7 @@ function App() {
     return ["all", ...Array.from(cats)];
   }, [items]);
 
+  // filter and sort items
   const filteredAndSortedItems = useMemo(() => {
     return items
       .filter(
@@ -54,6 +57,7 @@ function App() {
       });
   }, [items, filter, selectedCategory, sortDirection]);
 
+  // function for add item
   const handleAddItem = (item: Omit<InventoryItem, "id">) => {
     const newItem = {
       ...item,
@@ -63,6 +67,7 @@ function App() {
     setIsModalOpen(false);
   };
 
+  // function for edit item
   const handleEditItem = (updatedItem: InventoryItem) => {
     setItems((prev) =>
       prev.map((item) => (item.id === updatedItem.id ? updatedItem : item))
@@ -98,6 +103,7 @@ function App() {
         </div>
 
         <div className="bg-white rounded-lg shadow mb-8">
+          {/* search box and select category */}
           <div className="p-6 border-b border-gray-200">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1">
@@ -132,7 +138,7 @@ function App() {
               </div>
             </div>
           </div>
-
+          {/* Table for display all the items  */}
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -218,6 +224,7 @@ function App() {
         </div>
       </div>
 
+      {/* modal for add item and edit item */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4 ">
           <div className="bg-white rounded-lg max-w-md w-full p-6 border-2 border-blue-400/40 shadow-blue-400/40 shadow-xl">
